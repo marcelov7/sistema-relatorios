@@ -11,8 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('inspecoes_gerador', function (Blueprint $table) {
+        Schema::create('equipamentos', function (Blueprint $table) {
             $table->id();
+            $table->string('nome');
+            $table->string('modelo')->nullable();
+            $table->string('fabricante')->nullable();
+            $table->string('numero_serie')->nullable();
+            $table->text('descricao')->nullable();
+            $table->boolean('ativo')->default(true);
             $table->timestamps();
         });
     }
@@ -22,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('inspecoes_gerador');
+        Schema::dropIfExists('equipamentos');
     }
 };

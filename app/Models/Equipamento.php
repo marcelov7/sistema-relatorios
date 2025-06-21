@@ -4,53 +4,31 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-
 class Equipamento extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
     protected $table = 'equipamentos';
 
     protected $fillable = [
         'nome',
-        'codigo',
-        'descricao',
-        'local_id',
-        'tipo',
-        'fabricante',
         'modelo',
+        'fabricante',
         'numero_serie',
-        'data_instalacao',
-        'status_operacional',
-        'ativo',
-        'tenant_id'
+        'descricao',
+        'ativo'
     ];
 
     protected $casts = [
-        'data_instalacao' => 'date',
-        'ativo' => 'boolean',
-        'tenant_id' => 'integer'
+        'ativo' => 'boolean'
     ];
-
-    // Override timestamps para usar nomes do banco existente
-    const CREATED_AT = 'data_criacao';
-    const UPDATED_AT = 'data_atualizacao';
 
     // Status operacionais disponíveis
     const STATUS_OPERANDO = 'operando';
     const STATUS_MANUTENCAO = 'manutencao';
     const STATUS_INATIVO = 'inativo';
 
-    /**
-     * Boot method
-     */
-    protected static function booted()
-    {
-        static::creating(function ($model) {
-            $model->tenant_id = 1; // Temporário
-        });
-    }
+
 
     /**
      * Relacionamento com Local
@@ -96,11 +74,7 @@ class Equipamento extends Model
         return $query->where('status_operacional', self::STATUS_INATIVO);
     }
 
-    public function scopeTenant($query, $tenantId = null)
-    {
-        $tenantId = $tenantId ?: 1; // Temporário
-        return $query->where('tenant_id', $tenantId);
-    }
+
 
     /**
      * Accessors

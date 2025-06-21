@@ -16,28 +16,12 @@ class Local extends Model
         'nome',
         'descricao', 
         'endereco',
-        'ativo',
-        'tenant_id'
+        'ativo'
     ];
 
     protected $casts = [
-        'ativo' => 'boolean',
-        'tenant_id' => 'integer'
+        'ativo' => 'boolean'
     ];
-
-    // Override timestamps para usar nomes do banco existente
-    const CREATED_AT = 'data_criacao';
-    const UPDATED_AT = 'data_atualizacao';
-
-    /**
-     * Boot method
-     */
-    protected static function booted()
-    {
-        static::creating(function ($model) {
-            $model->tenant_id = 1; // Temporário
-        });
-    }
 
     /**
      * Relacionamento com Relatórios
@@ -68,11 +52,7 @@ class Local extends Model
         return $query->where('ativo', false);
     }
 
-    public function scopeTenant($query, $tenantId = null)
-    {
-        $tenantId = $tenantId ?: 1; // Temporário
-        return $query->where('tenant_id', $tenantId);
-    }
+
 
     /**
      * Accessors

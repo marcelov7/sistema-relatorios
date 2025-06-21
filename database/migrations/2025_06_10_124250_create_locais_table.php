@@ -11,8 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('relatorios', function (Blueprint $table) {
-            // Adicionar coluna deleted_at para SoftDeletes
+        Schema::create('locais', function (Blueprint $table) {
+            $table->id();
+            $table->string('nome');
+            $table->text('descricao')->nullable();
+            $table->string('endereco')->nullable();
+            $table->boolean('ativo')->default(true);
+            $table->timestamps();
             $table->softDeletes();
         });
     }
@@ -22,9 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('relatorios', function (Blueprint $table) {
-            // Remover coluna deleted_at
-            $table->dropSoftDeletes();
-        });
+        Schema::dropIfExists('locais');
     }
 };
